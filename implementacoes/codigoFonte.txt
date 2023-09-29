@@ -1,4 +1,0 @@
-program main()
-	begin
-		int at := 1
-	end
