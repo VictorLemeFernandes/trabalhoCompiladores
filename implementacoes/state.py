@@ -2,7 +2,7 @@ import string
 
 numeros = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 alfabeto = list(string.ascii_letters)
-letras = [alfabeto]
+letras = alfabeto
 
 
 class Estado:
@@ -15,8 +15,39 @@ class Estado:
         self.retornoToken = retornoToken
 
 
+def estadoInicial():
+    return Estado(
+            nome=0,
+            final=False,
+            transicoes=[
+                (numeros, 3),
+                (letras, 1),
+                (' ', 21),
+                ('\n', 21),
+                ('\t', 21),
+                ('<', 12),
+                ('>', 15),
+                ('!', 18),
+                ('=', 20),
+                ('{', 23),
+                ('}', 24),
+                ('(', 25),
+                (')', 26),
+                ('+', 27),
+                ('-', 28),
+                ('/', 29),
+                ('*', 30),
+                ('^', 31),
+                (',', 32),
+                (':', 33)
+            ],
+            lookahead=False,
+            retornoToken=None
+        )
+
+
 def defineTabelaTransicao():
-    tabelaTransicao = [
+    return [
         Estado(
             nome=-1,
             final=True,
@@ -31,14 +62,26 @@ def defineTabelaTransicao():
             transicoes=[
                 (numeros, 3),
                 (letras, 1),
-                (' ' or '\n' or '\t', 21),
+                (' ', 21),
+                ('\n', 21),
+                ('\t', 21),
                 ('<', 12),
                 ('>', 15),
                 ('!', 18),
                 ('=', 20),
-                ('{', 23)
+                ('{', 23),
+                ('}', 24),
+                ('(', 25),
+                (')', 26),
+                ('+', 27),
+                ('-', 28),
+                ('/', 29),
+                ('*', 30),
+                ('^', 31),
+                (',', 32),
+                (':', 33)
             ],
-            lookeahead=False,
+            lookahead=False,
             retornoToken=None
         ),
 
@@ -348,3 +391,12 @@ def defineTabelaTransicao():
         ),
 
     ]
+
+
+def move(caractere, estado, tabelaDeEstados):
+    for transicao in estado.transicoes:
+        caracteres, proximo_estado = transicao
+        if caractere in caracteres or caractere == caracteres:
+            return tabelaDeEstados[proximo_estado + 1]
+    return tabelaDeEstados[0]
+
