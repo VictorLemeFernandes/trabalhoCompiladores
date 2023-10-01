@@ -35,7 +35,7 @@ def estadoInicial():
     return 0
 
 def estadoFinal(estado):
-    if estado != 3:
+    if estado != 2:
         return False
     else:
         return True
@@ -66,14 +66,25 @@ def ehSeparador(caractere):
 
 def move(estado, caractere):
     # Para ID's
-    if ehAZ(caractere) or ehNumero(caractere) and estado >= 0:
-        if estado == 0 and ehAZ(caractere) == False:
-            return -1
-        elif estado == 0:
+    if estado == 0 and ehAZ(caractere):
+        return 1
+    elif estado > 0 and (ehAZ(caractere) or ehNumero(caractere)):
+        if estado == 1:
             return 1
-        elif estado == 1 or estado == 2:
-            return 2
-    elif caractere != '\n' and caractere != ' ' and caractere != '_':
-        return -1
+    elif estado > 0 and ehSeparador(caractere):
+        return 2 # Estado final
     else:
-        return 3
+        return -1
+
+    # if ehAZ(caractere) or ehNumero(caractere) and estado >= 0:
+    #     if estado == 0 and ehAZ(caractere) == False:
+    #         return -1
+    #     elif estado == 0:
+    #         return 1
+    #     elif estado == 1 or estado == 2:
+    #         return 2
+    # elif caractere != '\n' and caractere != ' ' and caractere != '_':
+    #     return -1
+    # else:
+    #     return 3
+    
