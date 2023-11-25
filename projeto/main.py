@@ -3,12 +3,18 @@ import variaveisGlobais as funcoes
 
 estadoAtual = funcoes.estadoInicial()
 
+contLinha = 1
+contColuna = 1
+
 with open("code.txt", "r") as arquivo:
     caractere = arquivo.read(1) # Le 1 caractere do arquivo
+    contColuna += 1
 
-    while funcoes.estadoFinal(estadoAtual) == False and estadoAtual != -1:
-
-        if caractere == ' ' or caractere == '\n' or caractere == '\t':
+    while estadoAtual != -1:
+        if (caractere == ' ' and estadoAtual != 23) or caractere == '\n' or caractere == '\t':
+            if caractere == '\n':
+                contLinha += 1
+                contColuna = 1
             estadoAtual = funcoes.move(estadoAtual, caractere)
             if funcoes.estadoFinal(estadoAtual):
                 estadoAtual = funcoes.estadoInicial() # Volta para o estado inicial quando le espaços, tabulações e quebras de linha
@@ -17,6 +23,7 @@ with open("code.txt", "r") as arquivo:
                 break
         estadoAtual = funcoes.move(estadoAtual, caractere)
         caractere = arquivo.read(1)
+        contColuna += 1
         if not caractere:
             estadoAtual = funcoes.move(estadoAtual, caractere)
             break
@@ -26,3 +33,4 @@ if funcoes.estadoFinal(estadoAtual):
     print('Cadeia aceita!')
 else:
     print('Cadeia não aceita.')
+    print('Relatorio de erro: \nErro na linha: ' + str(contLinha) + ' e coluna: ' + str(contColuna))

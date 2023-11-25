@@ -35,7 +35,7 @@ def estadoInicial():
 
 
 def estadoFinal(estado):
-    estadosFinais = [2, 4, 7, 11, 100]
+    estadosFinais = [2, 4, 7, 11, 24, 13, 14, 16, 17, 19, 20, 100]
     if estado not in estadosFinais:
         return False
     else:
@@ -52,6 +52,8 @@ def ehAZ(caractere):
 
 # Verifica se eh um digito de 0 a 9
 def ehNumero(caractere):
+    if caractere == '':
+        return False
     if ord('0') <= ord(caractere) <= ord('9'):
         return True
     else:
@@ -80,9 +82,6 @@ def ehEspecialDigito(caractere):
 
 
 def move(estado, caractere):
-    if caractere == '':
-        return 100
-
     # Para ID's
     if estado == 0 and ehAZ(caractere):
         return 1
@@ -92,7 +91,6 @@ def move(estado, caractere):
         return 2 # Estado final
     elif estado == 2 and (not ehAZ(caractere) and not ehNumero(caractere)):
         return -1 # Quando for erro
-
 
     # Para digitos
     elif estado == 0 and ehNumero(caractere):
@@ -106,18 +104,24 @@ def move(estado, caractere):
         return 4
     elif estado == 3 and ehEspecialDigito(caractere) == 1: # 1 == '.'
         return 5
-    # elif estado > 3 and not ehNumero(caractere) and not ehEspecialDigito(caractere):
-    #     return 4 # Estado final
+    elif estado == 3 and ehSeparador(caractere):
+        return 4 # Estado final
     elif estado == 3 and ehEspecialDigito(caractere) == 2: # 2 == 'E'
         return 8
     elif estado == 5 and ehNumero(caractere):
         return 6
     elif estado == 5 and not ehNumero(caractere) and ehEspecialDigito(caractere) != 0:
         return -1 # Quando for erro
+    elif estado == 5 and not ehNumero(caractere) and ehEspecialDigito(caractere) == 0:
+        return 5
     elif estado == 6:
         if ehNumero(caractere):
             return 6
-        elif not ehNumero(caractere) and not ehEspecialDigito(caractere) == 2:
+        if ehSeparador(caractere):
+            return 7
+        elif not ehNumero(caractere) and not ehEspecialDigito(caractere) == 2 and caractere == '':
+            return 6
+        elif not ehNumero(caractere) and not ehEspecialDigito(caractere) == 2 and caractere == '' and not ehEspecialDigito(caractere) != 1 and not ehEspecialDigito(caractere) != 3 and not ehEspecialDigito(caractere) != 4:
             return 7 # Estado final
         elif ehEspecialDigito(caractere) == 2:
             return 8
@@ -135,6 +139,47 @@ def move(estado, caractere):
     elif estado == 10:
         if ehNumero(caractere):
             return 10
-        elif not ehNumero(caractere):
+        elif not ehNumero(caractere) and caractere != '':
             return 11 # Estado final
+        else:
+            return 10
+        
+    # para comentarios
+    elif estado == 0 and caractere == '{':
+        return 23
+    elif estado == 23 and caractere != '}':
+        return 23
+    elif estado == 23 and caractere == '}':
+        return 24
+    elif estado == 24 and caractere == '':
+        return 24
     
+    # para operadores relacionais
+    elif estado == 0 and caractere == '<':
+        return 12
+    elif estado == 12 and caractere == '=':
+        return 13
+    elif estado == 12 and caractere != '=' and caractere != ' ':
+        return -1
+    elif estado == 13 and caractere != ' ':
+        return -1
+    elif estado == 0 and caractere == '>':
+        return 15
+    elif estado == 15 and caractere == '=':
+        return 16
+    elif estado == 15 and caractere != '=' and caractere != ' ':
+        return -1
+    elif estado == 16 and caractere != ' ':
+        return -1
+    elif estado == 0 and caractere == '!':
+        return 18
+    elif estado == 18 and caractere == '=':
+        return 19
+    elif estado == 18 and caractere != '=':
+        return -1
+    elif estado == 0 and caractere == '=':
+        return 20
+    elif estado == 20 and ehSeparador(caractere):
+        return 20
+    elif estado == 0 and caractere != '<' and caractere != '>' and caractere != '!' and caractere != '=':
+        return -1
