@@ -49,6 +49,13 @@ def estadoInicial():
 def defineTabelaTransicao():
     return [
         Estado(
+            nome=100,
+            final=True,
+            transicoes=[],
+            lookahead=False,
+            retornoToken=None
+        ),
+        Estado(
             nome=-1,
             final=True,
             transicoes=[],
@@ -127,7 +134,7 @@ def defineTabelaTransicao():
 
         Estado(
             nome=5,
-            final=True,
+            final=False,
             transicoes=[
                 (numeros, 6),
                 (not numeros, -1)

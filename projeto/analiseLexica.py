@@ -60,11 +60,10 @@ class AnalisadorLexico:
             ('^', 'POW'),
             ('(', ''),
             (')', ''),
-            ('{', ''),
-            ('}', ''),
             (':=', '')
         ]
 
+    # Variaveis globais da classe
     vetorTokens = []
     posicaoTabSimbolos = 1
     numeros = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -81,8 +80,15 @@ class AnalisadorLexico:
     def armazenaTokens(self):
         with open("code.txt", "r") as arquivo:
             for linha in arquivo:
+                
+                # Verificamos se existe um comentario nesta linha.
+                # Lembrando que o comentario deve ter uma linha so para ele.
+                if linha[0] == '{' and linha[-2] == '}':
+                    continue
+
                 stringLinha = linha.split(' ')
                 for elementoLinha in stringLinha:
+                    # Verifica se o token esta nos padroes de tokens.
                     flag = False
                     for tupla in self.padroes:
                         if elementoLinha == tupla[0]:
@@ -95,11 +101,13 @@ class AnalisadorLexico:
                             elementoLinha = elementoLinha.replace('\n', '')
                         
                         tabelaSimbolosLista = list(self.tabelaSimbolos.tabelaSimbolos.values())
+                        # Verifica se o elemento ja esta na tabela de simbolos.
                         flag2 = False
                         for i in range(len(tabelaSimbolosLista)):
                             if elementoLinha in tabelaSimbolosLista[i][0]:
                                 flag2 = True
                         if flag2 == False:
+                            # Verifica se constNum, constaChar ou id.
                             if elementoLinha[0] in self.numeros:
                                 self.tabelaSimbolos.inserir(self.posicaoTabSimbolos, (elementoLinha, 'constNum'))
                                 self.inserirToken(elementoLinha, self.posicaoTabSimbolos)
@@ -111,6 +119,7 @@ class AnalisadorLexico:
                                 self.inserirToken(elementoLinha, self.posicaoTabSimbolos)
                             self.posicaoTabSimbolos += 1
                         else:
+                            # Se ja existir na tabela de simbolos, busca para repetir no vetorTokens
                             chave = self.tabelaSimbolos.buscar_por_valor(elementoLinha)
                             self.inserirToken(elementoLinha, chave)
 
@@ -118,7 +127,10 @@ class AnalisadorLexico:
 # Exemplo de uso
 lexer = AnalisadorLexico()
 lexer.armazenaTokens()
+
 lexer.tabelaSimbolos.imprimir_tabela()
+
+
 print('\nTokens:')
 for token in lexer.vetorTokens:
     print(token)
