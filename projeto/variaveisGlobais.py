@@ -1,30 +1,7 @@
-tabelaSimbolos = [
-    # [tipoToken, lexema, valor, tipoDado] -> 2 ultimos serao preenchidos somente quando necessario
-    ['relOp', '<', 'LT', None],
-    ['relOp', '>', 'GT', None],
-    ['relOp', '<=', 'LE', None],
-    ['relOp', '>=', 'GE', None],
-    ['relOp', '=', 'E', None],
-    ['relOp', '!=', 'DIFF', None],
-    ['+', '+', None, None],
-    ['-', '-', None, None],
-    ['*', '*', None, None],
-    ['/', '/', None, None],
-    [':=', ':=', None, None],
-    [';', ';', None, None],
-    ['.', '.', None, None],
-    ['(', '(', None, None],
-    [')', ')', None, None],
-    ['{', '{', None, None],
-    ['}', '}', None, None],
-]
-
-
 # keywords
 keywords = ['int', 'char', 'float', 'if', 'then', 'else', 'while', 'until', 'repeat', 'program', 'begin', 'end']
 listaTokens = []
 digitos = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-letras = ['a']
 
 def isKeyword(lexema):
     return lexema in keywords

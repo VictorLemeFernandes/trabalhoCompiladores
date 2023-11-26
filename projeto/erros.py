@@ -1,4 +1,3 @@
-import state
 import variaveisGlobais as funcoes
 
 def verificaCadeia():
