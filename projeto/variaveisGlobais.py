@@ -35,7 +35,7 @@ def estadoInicial():
 
 
 def estadoFinal(estado):
-    estadosFinais = [2, 4, 7, 11, 24, 13, 14, 16, 17, 19, 20, 100]
+    estadosFinais = [2, 4, 7, 11, 24, 13, 14, 16, 17, 19, 20, 25, 26, 27, 28, 29, 30, 31, 32, 33, 100]
     if estado not in estadosFinais:
         return False
     else:
@@ -82,8 +82,10 @@ def ehEspecialDigito(caractere):
 
 
 def move(estado, caractere):
+    if estado == 0 and ehSeparador(caractere):
+        return 0
     # Para ID's
-    if estado == 0 and ehAZ(caractere):
+    elif estado == 0 and ehAZ(caractere):
         return 1
     elif estado == 1 and (ehAZ(caractere) or ehNumero(caractere)):
         return 1
@@ -181,5 +183,70 @@ def move(estado, caractere):
         return 20
     elif estado == 20 and ehSeparador(caractere):
         return 20
+    
+    # para operadores aritmeticos
+    elif estado == 0 and caractere == '+':
+        return 27
+    elif estado == 27 and caractere == ' ' or ehNumero(caractere):
+        return 0
+    elif estado == 27 and caractere != ' ':
+        return -1
+    
+    elif estado == 0 and caractere == '-':
+        return 28
+    elif estado == 28 and caractere == ' ' or ehNumero(caractere):
+        return 0
+    elif estado == 28 and caractere != ' ':
+        return -1
+    
+    elif estado == 0 and caractere == '*':
+        return 30
+    elif estado == 30 and caractere == ' ' or ehSeparador(caractere):
+        return 0
+    elif estado == 30 and caractere != ' ':
+        return -1
+    
+    elif estado == 0 and caractere == '/':
+        return 29
+    elif estado == 29 and caractere == ' ' or ehSeparador(caractere):
+        return 0
+    elif estado == 29 and caractere != ' ':
+        return -1
+
+    elif estado == 0 and caractere == '^':
+        return 31
+    elif estado == 31 and caractere == ' ' or ehSeparador(caractere):
+        return 0
+    elif estado == 31 and caractere != ' ':
+        return -1
+
+    elif estado == 0 and caractere == ',':
+        return 32
+    elif estado == 32 and caractere == ' ' or ehSeparador(caractere):
+        return 0
+    elif estado == 32 and caractere != ' ':
+        return -1
+
+    elif estado == 0 and caractere == ':':
+        return 33
+    elif estado == 33 and caractere == ' ' or ehSeparador(caractere):
+        return 0
+    elif estado == 33 and caractere != ' ':
+        return -1
+
+    elif estado == 0 and caractere == '(':
+        return 25
+    elif estado == 25 and caractere == ' ':
+        return 0
+    elif estado == 25 and caractere != ' ':
+        return -1
+
+    elif estado == 0 and caractere == ')':
+        return 26
+    elif estado == 26 and caractere == ' ' or ehSeparador(caractere):
+        return 0
+    elif estado == 26 and caractere != ' ':
+        return -1
+
     elif estado == 0 and caractere != '<' and caractere != '>' and caractere != '!' and caractere != '=':
         return -1
