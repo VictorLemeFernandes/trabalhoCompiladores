@@ -148,15 +148,3 @@ class AnalisadorLexico:
                             # Se ja existir na tabela de simbolos, busca para repetir no vetorTokens
                             chave = self.tabelaSimbolos.buscar_por_valor(elementoLinha)
                             self.inserirToken(elementoLinha, chave)
-
-
-# Exemplo de uso
-lexer = AnalisadorLexico()
-lexer.armazenaTokens()
-
-lexer.tabelaSimbolos.imprimir_tabela()
-
-
-print('\nTokens:')
-for token in lexer.vetorTokens:
-    print(token)

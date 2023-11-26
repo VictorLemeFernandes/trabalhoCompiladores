@@ -1,36 +1,19 @@
-import state
-import variaveisGlobais as funcoes
+import erros
+import analiseLexica as lex
 
-estadoAtual = funcoes.estadoInicial()
+status, errosRetorno = erros.verificaCadeia()
 
-contLinha = 1
-contColuna = 1
-
-with open("code.txt", "r") as arquivo:
-    caractere = arquivo.read(1) # Le 1 caractere do arquivo
-    contColuna += 1
-
-    while estadoAtual != -1:
-        if (caractere == ' ' and estadoAtual != 23) or caractere == '\n' or caractere == '\t':
-            if caractere == '\n':
-                contLinha += 1
-                contColuna = 1
-            estadoAtual = funcoes.move(estadoAtual, caractere)
-            if funcoes.estadoFinal(estadoAtual):
-                estadoAtual = funcoes.estadoInicial() # Volta para o estado inicial quando le espaços, tabulações e quebras de linha
-                caractere = arquivo.read(1)
-            else:
-                break
-        estadoAtual = funcoes.move(estadoAtual, caractere)
-        caractere = arquivo.read(1)
-        contColuna += 1
-        if not caractere:
-            estadoAtual = funcoes.move(estadoAtual, caractere)
-            break
+if status == 'Cadeia aceita!':
+    print(status)
         
+    lexer = lex.AnalisadorLexico()
+    lexer.armazenaTokens()
+    lexer.tabelaSimbolos.imprimir_tabela()
 
-if funcoes.estadoFinal(estadoAtual):
-    print('Cadeia aceita!')
+    # Imprime os tokens
+    print('\nTokens:')
+    for token in lexer.vetorTokens:
+        print(token)
 else:
-    print('Cadeia não aceita.')
-    print('Relatorio de erro: \nErro na linha: ' + str(contLinha) + ' e coluna: ' + str(contColuna))
+    print(status)
+    print(errosRetorno)
